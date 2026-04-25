@@ -12,7 +12,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0d0d2b"
       },
       "package": "com.royalhunt.game"
@@ -23,6 +23,11 @@
     },
     "web": {
       "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d3a50a83-38ff-4cc0-92a1-7389a869fa96"
+      }
     }
   }
 }
