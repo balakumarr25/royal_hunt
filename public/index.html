@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Royal Hunt 👑</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- LOBBY SCREEN -->
+<div id="screen-lobby" class="screen active">
+  <div class="lobby-bg">
+    <div class="particles" id="particles"></div>
+    <div class="lobby-card">
+      <div class="logo-area">
+        <div class="crown-anim">👑</div>
+        <h1 class="game-title">Royal Hunt</h1>
+        <p class="game-subtitle">4 Players · 4 Roles · 1 Secret</p>
+      </div>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="playerName" placeholder="Enter your name..." maxlength="16" />
+      </div>
+      <div class="form-group">
+        <label>Room Code</label>
+        <div class="room-row">
+          <input type="text" id="roomId" placeholder="Enter room code..." maxlength="8" />
+          <button class="btn-secondary" id="genRoom">🎲</button>
+        </div>
+      </div>
+      <button class="btn-primary" id="joinBtn">Enter the Kingdom</button>
+      <div id="lobby-error" class="error-msg"></div>
+      <div class="rules-toggle" id="rulesToggle">📜 How to Play</div>
+      <div class="rules-box" id="rulesBox">
+        <div class="rule-item"><span class="role-badge king">👑 King</span> <span>1000 pts — Always wins big</span></div>
+        <div class="rule-item"><span class="role-badge queen">👸 Queen</span> <span>500 pts — Always wins</span></div>
+        <div class="rule-item"><span class="role-badge soldier">⚔️ Soldier</span> <span>200 pts if catches Thief, else 100</span></div>
+        <div class="rule-item"><span class="role-badge thief">🗡️ Thief</span> <span>100 pts if not caught, else 0</span></div>
+        <p class="rule-note">Only the Soldier's identity is revealed. The Soldier must guess who the Thief is!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WAITING ROOM SCREEN -->
+<div id="screen-waiting" class="screen">
+  <div class="waiting-bg">
+    <div class="waiting-card">
+      <h2>⚔️ War Room</h2>
+      <div class="room-code-display">
+        Room: <span id="displayRoomId"></span>
+        <button class="copy-btn" id="copyRoom" title="Copy room code">📋</button>
+      </div>
+      <p class="waiting-hint">Share the room code with friends. Game starts when 4 players join.</p>
+      <div class="player-slots" id="playerSlots"></div>
+      <div class="waiting-status" id="waitingStatus">Waiting for players...</div>
+      <button class="btn-start" id="startBtn" style="display:none">⚔️ Start the Hunt!</button>
+      <div class="leaderboard-section" id="waitingLeaderboard" style="display:none">
+        <div class="lb-title">🏆 Overall Leaderboard</div>
+        <div class="lb-rows" id="waitingLbRows"></div>
+      </div>
+      <div class="chat-section">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Say something..." maxlength="80" />
+          <button class="btn-chat" id="sendChat">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROLE REVEAL SCREEN -->
+<div id="screen-role" class="screen">
+  <div class="role-bg">
+    <div class="role-reveal-card" id="roleRevealCard">
+      <p class="reveal-label">Your Secret Role</p>
+      <div class="role-emoji-big" id="revealEmoji"></div>
+      <div class="role-name-big" id="revealRoleName"></div>
+      <div class="role-value-big" id="revealRoleValue"></div>
+      <div class="role-desc" id="revealRoleDesc"></div>
+      <div class="reveal-countdown">Revealing in <span id="revealTimer">3</span>s...</div>
+    </div>
+  </div>
+</div>
+
+<!-- GUESSING SCREEN -->
+<div id="screen-guess" class="screen">
+  <div class="guess-bg">
+    <div class="guess-card">
+      <div class="guess-header">
+        <h2>🔍 The Hunt Begins</h2>
+        <div class="soldier-reveal" id="soldierReveal"></div>
+      </div>
+      <div id="myRoleBadge" class="my-role-badge"></div>
+      <div id="guessSection">
+        <p class="guess-instruction">⚔️ Soldier, choose who you think is the <strong>🗡️ Thief</strong>!</p>
+        <div class="guess-players" id="guessPlayers"></div>
+      </div>
+      <div id="waitSection" class="wait-section" style="display:none">
+        <div class="wait-anim">⏳</div>
+        <p>Waiting for the Soldier to make their move...</p>
+      </div>
+      <div class="chat-section small">
+        <div class="chat-messages" id="chatMessages2"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput2" placeholder="Chat..." maxlength="80" />
+          <button class="btn-chat" id="sendChat2">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="screen-result" class="screen">
+  <div class="result-bg">
+    <div class="result-card">
+      <div class="result-header" id="resultHeader"></div>
+      <div class="result-announcement" id="resultAnnouncement"></div>
+      <div class="scoreboard" id="scoreboard"></div>
+      <div class="leaderboard-section" id="resultLeaderboard">
+        <div class="lb-title">🏆 Overall Leaderboard</div>
+        <div class="lb-rows" id="resultLbRows"></div>
+      </div>
+      <button class="btn-primary" id="playAgainBtn">🔄 Play Again</button>
+    </div>
+    <div class="confetti-container" id="confettiContainer"></div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

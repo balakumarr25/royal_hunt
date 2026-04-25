@@ -1,0 +1,13 @@
+{
+  "name": "royal-hunt-game",
+  "version": "1.0.0",
+  "description": "Royal Hunt - Online Multiplayer Role Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
