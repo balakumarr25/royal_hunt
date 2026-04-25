@@ -1,83 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Royal Hunt 👑</title>
-  <meta name="theme-color" content="#f5c842" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Royal Hunt" />
-  <link rel="apple-touch-icon" href="/icon-192.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#f5c842"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Royal Hunt"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+<div id="particles"></div>
 
-<!-- LOBBY SCREEN -->
-<div id="screen-lobby" class="screen active">
-  <div class="lobby-bg">
-    <div class="particles" id="particles"></div>
-    <div class="lobby-card">
-      <div class="logo-area">
+<!-- ═══ SPLASH ═══ -->
+<div id="screen-splash" class="screen active">
+  <div class="splash-center">
+    <div class="splash-crown">👑</div>
+    <div class="splash-title">Royal Hunt</div>
+    <div class="splash-loader"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- ═══ AUTH ═══ -->
+<div id="screen-auth" class="screen">
+  <div class="auth-bg">
+    <div class="auth-card">
+      <div class="auth-logo">
         <div class="crown-anim">👑</div>
         <h1 class="game-title">Royal Hunt</h1>
         <p class="game-subtitle">4 Players · 4 Roles · 1 Secret</p>
       </div>
-      <div class="form-group">
-        <label>Your Name</label>
-        <input type="text" id="playerName" placeholder="Enter your name..." maxlength="16" />
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
       </div>
-      <div class="form-group">
-        <label>Room Code</label>
-        <div class="room-row">
-          <input type="text" id="roomId" placeholder="Enter room code..." maxlength="8" />
-          <button class="btn-secondary" id="genRoom">🎲</button>
+      <!-- Login Form -->
+      <div id="formLogin">
+        <div class="form-group">
+          <label>Username</label>
+          <div class="input-icon-wrap"><span class="inp-icon">👤</span><input type="text" id="loginUser" placeholder="Your username" autocomplete="username"/></div>
         </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-icon-wrap"><span class="inp-icon">🔒</span><input type="password" id="loginPass" placeholder="Your password" autocomplete="current-password"/></div>
+        </div>
+        <button class="btn-primary" id="loginBtn">Enter the Kingdom</button>
       </div>
-      <button class="btn-primary" id="joinBtn">Enter the Kingdom</button>
-      <div id="lobby-error" class="error-msg"></div>
+      <!-- Signup Form -->
+      <div id="formSignup" style="display:none">
+        <div class="form-group">
+          <label>Choose Username</label>
+          <div class="input-icon-wrap"><span class="inp-icon">👤</span><input type="text" id="signupUser" placeholder="Min 3 characters" autocomplete="username"/></div>
+        </div>
+        <div class="form-group">
+          <label>Create Password</label>
+          <div class="input-icon-wrap"><span class="inp-icon">🔒</span><input type="password" id="signupPass" placeholder="Min 4 characters" autocomplete="new-password"/></div>
+        </div>
+        <button class="btn-primary" id="signupBtn">Create Account</button>
+      </div>
+      <div id="auth-error" class="error-msg"></div>
+      <!-- Rules -->
       <div class="rules-toggle" id="rulesToggle">📜 How to Play</div>
       <div class="rules-box" id="rulesBox">
-        <div class="rule-item"><span class="role-badge king">👑 King</span> <span>1000 pts — Always wins big</span></div>
-        <div class="rule-item"><span class="role-badge queen">👸 Queen</span> <span>500 pts — Always wins</span></div>
-        <div class="rule-item"><span class="role-badge soldier">⚔️ Soldier</span> <span>200 pts if catches Thief, else 100</span></div>
-        <div class="rule-item"><span class="role-badge thief">🗡️ Thief</span> <span>100 pts if not caught, else 0</span></div>
-        <p class="rule-note">Only the Soldier's identity is revealed. The Soldier must guess who the Thief is!</p>
+        <div class="rule-item"><span class="role-badge king">👑 King</span><span>1000 pts — Always wins</span></div>
+        <div class="rule-item"><span class="role-badge queen">👸 Queen</span><span>500 pts — Always wins</span></div>
+        <div class="rule-item"><span class="role-badge soldier">⚔️ Soldier</span><span>200 if catches Thief, else 100</span></div>
+        <div class="rule-item"><span class="role-badge thief">🗡️ Thief</span><span>100 if not caught, else 0</span></div>
+        <p class="rule-note">Only the Soldier is revealed. Soldier must find the Thief!</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- WAITING ROOM SCREEN -->
+<!-- ═══ HOME / DASHBOARD ═══ -->
+<div id="screen-home" class="screen">
+  <div class="app-layout">
+    <!-- Top Nav -->
+    <nav class="top-nav">
+      <div class="nav-logo">👑 <span>Royal Hunt</span></div>
+      <div class="nav-user" id="navUser"></div>
+      <button class="nav-menu-btn" id="menuToggle">☰</button>
+    </nav>
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+      <div class="menu-profile" id="menuProfile"></div>
+      <div class="menu-items">
+        <button class="menu-item active" onclick="showTab('tabPlay')">🎮 Play</button>
+        <button class="menu-item" onclick="showTab('tabLeaderboard')">🏆 Leaderboard</button>
+        <button class="menu-item" onclick="showTab('tabProfile')">👤 My Profile</button>
+        <button class="menu-item" onclick="showTab('tabHowTo')">📜 How to Play</button>
+      </div>
+      <button class="menu-logout" id="logoutBtn">🚪 Logout</button>
+    </div>
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- PLAY TAB -->
+      <div class="tab-content active" id="tabPlay">
+        <div class="home-welcome" id="homeWelcome"></div>
+        <div class="home-stats" id="homeStats"></div>
+        <div class="play-card">
+          <h3 class="section-title">⚔️ Enter the War Room</h3>
+          <div class="form-group">
+            <label>Room Code</label>
+            <div class="room-row">
+              <div class="input-icon-wrap" style="flex:1"><span class="inp-icon">🏰</span><input type="text" id="roomId" placeholder="Enter or generate code..." maxlength="8"/></div>
+              <button class="btn-secondary" id="genRoom">🎲</button>
+            </div>
+          </div>
+          <button class="btn-primary" id="joinBtn">Enter the Kingdom</button>
+          <div id="home-error" class="error-msg"></div>
+        </div>
+        <div class="quick-lb-card">
+          <div class="section-title">🏆 Top Players</div>
+          <div id="quickLbRows"></div>
+        </div>
+      </div>
+      <!-- LEADERBOARD TAB -->
+      <div class="tab-content" id="tabLeaderboard">
+        <h2 class="page-title">🏆 Global Leaderboard</h2>
+        <div class="lb-filters">
+          <button class="lb-filter active" onclick="sortLb('score')">By Score</button>
+          <button class="lb-filter" onclick="sortLb('wins')">By Wins</button>
+          <button class="lb-filter" onclick="sortLb('games')">By Games</button>
+        </div>
+        <div id="fullLbRows" class="full-lb"></div>
+      </div>
+      <!-- PROFILE TAB -->
+      <div class="tab-content" id="tabProfile">
+        <h2 class="page-title">👤 My Profile</h2>
+        <div id="profileContent"></div>
+      </div>
+      <!-- HOW TO PLAY TAB -->
+      <div class="tab-content" id="tabHowTo">
+        <h2 class="page-title">📜 How to Play</h2>
+        <div class="howto-content">
+          <div class="howto-roles">
+            <div class="howto-role king-card"><div class="hr-emoji">👑</div><div class="hr-name">King</div><div class="hr-pts">1000 pts</div><div class="hr-desc">Identity hidden. Always earns full points. The most powerful role.</div></div>
+            <div class="howto-role queen-card"><div class="hr-emoji">👸</div><div class="hr-name">Queen</div><div class="hr-pts">500 pts</div><div class="hr-desc">Identity hidden. Always earns full points. Second most powerful.</div></div>
+            <div class="howto-role soldier-card"><div class="hr-emoji">⚔️</div><div class="hr-name">Soldier</div><div class="hr-pts">200 / 100 pts</div><div class="hr-desc">Identity revealed to all. Must find the Thief. Gets 200 if correct, 100 if wrong.</div></div>
+            <div class="howto-role thief-card"><div class="hr-emoji">🗡️</div><div class="hr-name">Thief</div><div class="hr-pts">100 / 0 pts</div><div class="hr-desc">Identity hidden. Gets 100 if Soldier guesses wrong, 0 if caught.</div></div>
+          </div>
+          <div class="howto-steps">
+            <div class="howto-step"><span class="step-num">1</span><span>4 players join the same room code</span></div>
+            <div class="howto-step"><span class="step-num">2</span><span>Anyone clicks Start — roles are assigned randomly</span></div>
+            <div class="howto-step"><span class="step-num">3</span><span>Each player secretly sees their own role</span></div>
+            <div class="howto-step"><span class="step-num">4</span><span>Everyone sees who the Soldier is</span></div>
+            <div class="howto-step"><span class="step-num">5</span><span>Soldier picks who they think is the Thief</span></div>
+            <div class="howto-step"><span class="step-num">6</span><span>Scores revealed — play again to climb the leaderboard!</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══ WAITING ROOM ═══ -->
 <div id="screen-waiting" class="screen">
   <div class="waiting-bg">
     <div class="waiting-card">
-      <h2>⚔️ War Room</h2>
-      <div class="room-code-display">
-        Room: <span id="displayRoomId"></span>
-        <button class="copy-btn" id="copyRoom" title="Copy room code">📋</button>
+      <div class="waiting-header">
+        <button class="back-btn" onclick="leaveRoom()">← Back</button>
+        <h2>⚔️ War Room</h2>
+        <div></div>
       </div>
-      <p class="waiting-hint">Share the room code with friends. Game starts when 4 players join.</p>
+      <div class="room-code-display">
+        <span id="displayRoomId"></span>
+        <button class="copy-btn" id="copyRoom">📋</button>
+      </div>
+      <p class="waiting-hint">Share code with friends · 4 players needed</p>
       <div class="player-slots" id="playerSlots"></div>
-      <div class="waiting-status" id="waitingStatus">Waiting for players...</div>
+      <div class="waiting-status" id="waitingStatus"></div>
       <button class="btn-start" id="startBtn" style="display:none">⚔️ Start the Hunt!</button>
       <div class="leaderboard-section" id="waitingLeaderboard" style="display:none">
-        <div class="lb-title">🏆 Overall Leaderboard</div>
+        <div class="lb-title">🏆 Room Leaderboard</div>
         <div class="lb-rows" id="waitingLbRows"></div>
       </div>
       <div class="chat-section">
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="Say something..." maxlength="80" />
-          <button class="btn-chat" id="sendChat">Send</button>
+          <input type="text" id="chatInput" placeholder="Say something..." maxlength="80"/>
+          <button class="btn-chat" id="sendChat">➤</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ROLE REVEAL SCREEN -->
+<!-- ═══ ROLE REVEAL ═══ -->
 <div id="screen-role" class="screen">
   <div class="role-bg">
     <div class="role-reveal-card" id="roleRevealCard">
@@ -86,40 +200,40 @@
       <div class="role-name-big" id="revealRoleName"></div>
       <div class="role-value-big" id="revealRoleValue"></div>
       <div class="role-desc" id="revealRoleDesc"></div>
-      <div class="reveal-countdown">Revealing in <span id="revealTimer">3</span>s...</div>
+      <div class="reveal-countdown">Game starts in <span id="revealTimer">3</span>s...</div>
     </div>
   </div>
 </div>
 
-<!-- GUESSING SCREEN -->
+<!-- ═══ GUESS SCREEN ═══ -->
 <div id="screen-guess" class="screen">
   <div class="guess-bg">
     <div class="guess-card">
       <div class="guess-header">
-        <h2>🔍 The Hunt Begins</h2>
+        <h2>🔍 The Hunt</h2>
         <div class="soldier-reveal" id="soldierReveal"></div>
       </div>
       <div id="myRoleBadge" class="my-role-badge"></div>
       <div id="guessSection">
-        <p class="guess-instruction">⚔️ Soldier, choose who you think is the <strong>🗡️ Thief</strong>!</p>
+        <p class="guess-instruction">⚔️ Soldier — who is the <strong>🗡️ Thief</strong>?</p>
         <div class="guess-players" id="guessPlayers"></div>
       </div>
       <div id="waitSection" class="wait-section" style="display:none">
         <div class="wait-anim">⏳</div>
-        <p>Waiting for the Soldier to make their move...</p>
+        <p>Waiting for the Soldier...</p>
       </div>
       <div class="chat-section small">
         <div class="chat-messages" id="chatMessages2"></div>
         <div class="chat-input-row">
-          <input type="text" id="chatInput2" placeholder="Chat..." maxlength="80" />
-          <button class="btn-chat" id="sendChat2">Send</button>
+          <input type="text" id="chatInput2" placeholder="Chat..." maxlength="80"/>
+          <button class="btn-chat" id="sendChat2">➤</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- RESULT SCREEN -->
+<!-- ═══ RESULT SCREEN ═══ -->
 <div id="screen-result" class="screen">
   <div class="result-bg">
     <div class="result-card">
@@ -127,10 +241,13 @@
       <div class="result-announcement" id="resultAnnouncement"></div>
       <div class="scoreboard" id="scoreboard"></div>
       <div class="leaderboard-section" id="resultLeaderboard">
-        <div class="lb-title">🏆 Overall Leaderboard</div>
+        <div class="lb-title">🏆 Room Leaderboard</div>
         <div class="lb-rows" id="resultLbRows"></div>
       </div>
-      <button class="btn-primary" id="playAgainBtn">🔄 Play Again</button>
+      <div class="result-actions">
+        <button class="btn-primary" id="playAgainBtn">🔄 Play Again</button>
+        <button class="btn-outline" id="homeBtn">🏠 Home</button>
+      </div>
     </div>
     <div class="confetti-container" id="confettiContainer"></div>
   </div>
@@ -138,10 +255,6 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="game.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
