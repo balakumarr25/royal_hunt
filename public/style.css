@@ -367,3 +367,31 @@ body {
 .lb-row .lb-name.lb-me { color: var(--gold); }
 .lb-row .lb-score { font-family: 'Cinzel', serif; font-size: 16px; color: var(--gold); font-weight: 700; }
 .lb-row .lb-games { font-size: 11px; color: rgba(255,255,255,0.3); margin-left: 4px; }
+
+/* ===== MOBILE / PWA ===== */
+@media (max-width: 480px) {
+  .lobby-card, .waiting-card, .guess-card, .result-card { padding: 24px 16px; border-radius: 16px; }
+  .game-title { font-size: 30px; letter-spacing: 2px; }
+  .crown-anim { font-size: 52px; }
+  .player-slots { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .guess-players { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .guess-player-btn { padding: 14px 8px; font-size: 14px; }
+  .guess-player-btn .player-avatar { font-size: 26px; }
+  .role-emoji-big { font-size: 72px; }
+  .role-name-big { font-size: 28px; }
+  .role-value-big { font-size: 36px; }
+  .result-card { padding: 28px 16px; }
+  .score-row .p-score { font-size: 18px; }
+}
+
+/* Safe area for notched phones */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Prevent double-tap zoom on buttons */
+button, input { touch-action: manipulation; }
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }

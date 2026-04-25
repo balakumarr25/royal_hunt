@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Royal Hunt",
+    "slug": "royal-hunt",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0d0d2b"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0d0d2b"
+      },
+      "package": "com.royalhunt.game"
+    },
+    "ios": {
+      "bundleIdentifier": "com.royalhunt.game",
+      "supportsTablet": false
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    }
+  }
+}
